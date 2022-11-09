@@ -1,0 +1,5 @@
+# editor
+.cache/
+.vscode/
+# builds
+build/

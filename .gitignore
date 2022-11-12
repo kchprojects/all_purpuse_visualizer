@@ -1,5 +1,7 @@
 # editor
 .cache/
 .vscode/
+#third party
+bindings/
 # builds
 build/

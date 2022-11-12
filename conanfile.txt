@@ -1,7 +1,20 @@
 [requires]
 fmt/9.0.0
 spdlog/1.11.0
+imgui/cci.20220621+1.88.docking
+glfw/3.3.8
+glew/2.2.0
 
 [generators]
 cmake 
 cmake_find_package
+
+[options]
+glew:shared=False
+
+[imports]
+./res/bindings, imgui_impl_glfw.cpp -> ../third_party/bindings
+./res/bindings, imgui_impl_opengl3.cpp -> ../third_party/bindings
+./res/bindings, imgui_impl_glfw.h -> ../third_party/bindings
+./res/bindings, imgui_impl_opengl3.h -> ../third_party/bindings
+./res/bindings, imgui_impl_opengl3_loader.h -> ../third_party/bindings

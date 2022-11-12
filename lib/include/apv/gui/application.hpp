@@ -22,5 +22,10 @@ namespace apv
                 throw std::runtime_error(message);
             }
         }
+        void run(){
+            while(backend_.is_alive()){
+                backend_.render_frame();
+            }
+        }
     };
-} // namespace apv
+} // name   space apv

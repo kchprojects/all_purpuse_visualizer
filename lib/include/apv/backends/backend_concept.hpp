@@ -1,3 +1,4 @@
+#pragma once
 #include <concepts>
 namespace apv {
 template <typename T> concept Backend = requires(T a) {

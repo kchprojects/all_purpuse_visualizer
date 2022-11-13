@@ -1,3 +1,4 @@
+#pragma once
 #include <apv/backends/backend_concept.hpp>
 namespace apv
 {

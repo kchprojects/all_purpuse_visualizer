@@ -9,6 +9,8 @@
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 
+#include <apv/gui/application.hpp>
+
 namespace apv {
 static void glfw_error_callback(int error, const char *description) {
   log(log_t::error{fmt::format("Glfw Error {}:{}", error, description)});
@@ -143,41 +145,53 @@ submit_dock(const std::string &dock_name,
   return dockspace_id;
 }
 
-void ImguiBackend::render_main_window() {
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-  if (ImGui::Begin("MainWindow", nullptr, get_main_window_flags())) {
-    ImGui::PopStyleVar();
-    submit_dock("MainDock");
-    if (ImGui::BeginMenuBar()) {
-      if (ImGui::BeginMenu("Menu")) {
+void ImguiBackend::render_menu(const MenuBar &menu) {
+  if (ImGui::BeginMenuBar()) {
+    for (const MenuTab &menu_tab : menu) {
+      if (ImGui::BeginMenu(menu_tab.label().c_str())) {
         ImGui::Separator();
-        if (ImGui::MenuItem("Item", "")) {
+        for (const MenuItem &menu_item : menu_tab.items()) {
+          if (ImGui::MenuItem(menu_item.label().c_str(), "")) {
+            menu_item.trigger();
+          }
         }
         ImGui::EndMenu();
       }
       ImGui::EndMenuBar();
     }
   }
+}
+
+void ImguiBackend::render_main_window(const MenuBar &main_menu) {
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+  if (ImGui::Begin("MainWindow", nullptr, get_main_window_flags())) {
+    ImGui::PopStyleVar();
+    submit_dock("MainDock");
+    render_menu(main_menu);
+  }
   ImGui::End();
 }
 
-void ImguiBackend::render_frame() {
+void ImguiBackend::init_frame() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-  static bool p_open = true;
-  render_main_window();
-  if (ImGui::Begin("Win", nullptr)) {
-  }
-  ImGui::End();
-  if (ImGui::Begin("Win2", nullptr)) {
-  }
-  //   simple_dock();
+}
+
+void ImguiBackend::submit_frame() {
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   int display_w, display_h;
   glfwGetFramebufferSize(main_window, &display_w, &display_h);
   glViewport(0, 0, display_w, display_h);
   glfwSwapBuffers(main_window);
+}
+
+void ImguiBackend::render_example_windows() {
+  if (ImGui::Begin("Win", nullptr)) {
+  }
+  ImGui::End();
+  if (ImGui::Begin("Win2", nullptr)) {
+  }
 }
 } // namespace apv

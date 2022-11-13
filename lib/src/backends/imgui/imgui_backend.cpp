@@ -149,16 +149,16 @@ void ImguiBackend::render_menu(const MenuBar &menu) {
   if (ImGui::BeginMenuBar()) {
     for (const MenuTab &menu_tab : menu) {
       if (ImGui::BeginMenu(menu_tab.label().c_str())) {
-        ImGui::Separator();
         for (const MenuItem &menu_item : menu_tab.items()) {
           if (ImGui::MenuItem(menu_item.label().c_str(), "")) {
             menu_item.trigger();
           }
+          ImGui::Separator();
         }
         ImGui::EndMenu();
       }
-      ImGui::EndMenuBar();
     }
+    ImGui::EndMenuBar();
   }
 }
 

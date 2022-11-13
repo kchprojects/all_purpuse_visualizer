@@ -33,6 +33,9 @@ template <Logger L> void log(log_t::error e, L &l) { l.error(e.message); }
 template <Logger L> void log(log_t::debug d, L &l) { l.debug(d.message); }
 template <Logger L> void log(log_t::info d, L &l) { l.info(d.message); }
 
-template <typename LogType>
-inline void log(LogType d) { log(d, *default_logger); }
+template <typename LogType> inline void log(LogType d) {
+  log(d, *default_logger);
+}
+
+inline void log_info(const std::string &info) { log(log_t::info{info}); }
 } // namespace apv
